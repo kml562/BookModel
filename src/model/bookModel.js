@@ -54,6 +54,6 @@ const bookScema = new Scema({
       }
 }, { timestamps: true });
 
-const BookModel = mongoose.model('Book',bookScema);
+const BookModel = model('Book',bookScema);
 
 export default BookModel;
