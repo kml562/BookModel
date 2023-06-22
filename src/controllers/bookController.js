@@ -1,11 +1,11 @@
 import { isValidObjectId } from "mongoose";
-import { checkISBN, isValid } from "../utils/validatior/validatior";
+import { checkISBN, isValid } from "../utils/validatior/validatior.js";
 import BookModel from "../model/bookModel.js";
+import moment from "moment";
 
 export const createBooks = async (req, res) => {
   try {
-    const { title, excerpt, userId, ISBN, category, subcategory, reviews } =
-      req.body;
+    const { title, excerpt, userId, ISBN, category, subcategory, reviews } = req.body;
 
     if (!title || !excerpt || !userId || !category || !subcategory || !ISBN) {
       return res
@@ -173,7 +173,7 @@ export const updateBook = async (req, res) => {
     }
 
     if (data.excerpt) {
-      if (typeof data.excerpt != "string") {
+      if (typeof data.excerpt !== "string") {
         return res
           .status(400)
           .json({ message: "please Enter data.excerpt in a string format" });
@@ -260,7 +260,7 @@ export const deletedbyId = async function (req, res) {
           
     let deletedbybookid = await BookModel.findOneAndUpdate(
       { _id: bookId, isDeleted: false },
-      { isDeleted: true, DeletedAt: Date.now() }
+      { isDeleted: true, DeletedAt:moment.format('YYYY-MM-DD HH:mm:ss') }
     );
     if (!deletedbybookid)
       return res

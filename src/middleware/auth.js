@@ -1,27 +1,28 @@
-import jwt from 'jsonwebtoken'
+import jwt from "jsonwebtoken";
 
-export const authentication = function (req, res, next) {
+export const authentication = (req, res, next)=> {
     try{
-    let headers=req.headers["x-api-key"]
+      const headers = req.headers["x-api-key"];
+      const { JWT_SECRET } = process.env;
     if(!headers){
-       return res.status(400).send({status:false,msg:"header is required"})
+       return res.status(400).json({status:false,msg:"header is required"})
     }
-    let verifiedToken=jwt.verify(headers,"group4californium",(error,token)=>{
+jwt.verify(headers,JWT_SECRET,(error,token)=>{
         if(error){
             
-            return res.status(401).send({msg:error.message})
+            return res.status(401).json({msg:error.message})
            
         }
       else
       {
         req.decodedToken=token;
-        // return token
+     // set tokin in req --------------------------------------------------------------------------------------
         next()
       }
         })
     
 
  }catch(error){
-        return res.status(500).send({status:true,msg:error.message})
+        return res.status(500).json({status:true,msg:error.message})
 }
 }

@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
-const userScema = new Schema({
+const userSchema = new Schema({
   title: {
     type: String,
     require: true,
@@ -48,5 +48,5 @@ const userScema = new Schema({
   },
 }, { timestamps: true });
 
-const UserModel = model("User", userScema);
+const UserModel = model("User", userSchema);
 export default UserModel;
