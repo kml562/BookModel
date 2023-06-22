@@ -1,10 +1,12 @@
 import express from "express";
 import { createBooks, deletedbyId, getbookId, getbooks, updateBook } from "../controllers/bookController.js";
+import { authentication } from "../middleware/auth.js";
+import { authorization } from "../middleware/authrzation.js";
 const router = express.Router();
 
-router.post('/books', createBooks);
-router.get('/books', getbooks);
-router.get('books/:bookId', getbookId);
-router.post('books/:bookId', updateBook);
-router.delete('books/:bookId',deletedbyId );
+router.post('/books',authentication ,createBooks);
+router.get('/books', authentication,getbooks);
+router.get('books/:bookId',authentication, getbookId);
+router.post('books/:bookId',authentication ,authorization,updateBook);
+router.delete('books/:bookId',authentication,authorization,deletedbyId );
 export default router;

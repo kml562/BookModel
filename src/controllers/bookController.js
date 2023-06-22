@@ -108,17 +108,17 @@ export const getbookId = async (req, res) => {
   try {
     let bookId = req.params.bookId;
     if (!isValid(bookId)) {
-      return res.status(400).json({
-        status: false,
-        msg: "Invalid bookID, please enter a valid ID",
-      });
-    }
+        return res.status(400).json({
+          status: false,
+          message: "Invalid bookID, please enter a valid ID",
+        });
+      }
 
     let book = await BookModel.findOne({ _id: bookId, isDeleted: false });
     if (!book) {
       return res
         .status(404)
-        .json({ status: false, msg: "Book does not exist with this ID" });
+        .json({ status: false, message: "Book does not exist with this ID" });
     }
 
     let review = await reviewModel.find({ bookId: bookId, isDeleted: false });
@@ -142,12 +142,18 @@ export const getbookId = async (req, res) => {
 
 export const updateBook = async (req, res) => {
   try {
-    let bookId = req.params.bookId;
+      let bookId = req.params.bookId;
+      if (!isValid(bookId)) {
+        return res.status(400).json({
+          status: false,
+          message: "Invalid bookID, please enter a valid ID",
+        });
+      }
     let data = req.body;
     if (Object.keys(data).length == 0) {
       return res
         .status(400)
-        .send({ status: false, msg: "provide data in body to update" });
+        .json({ status: false, message: "provide data in body to update" });
     }
     let obj = {};
 
@@ -156,21 +162,21 @@ export const updateBook = async (req, res) => {
       if (typeof data.title != "string") {
         return res
           .status(400)
-          .send({ msg: "please Enter title in a string format" });
+          .json({ message: "please Enter title in a string format" });
       }
       data.title = data.title.trim();
 
       if (validator.isNumeric(data.title))
         return res
           .status(400)
-          .send({ status: false, msg: "Book title cannot be numbers only" });
+          .json({ status: false, message: "Book title cannot be numbers only" });
     }
 
     if (data.excerpt) {
       if (typeof data.excerpt != "string") {
         return res
           .status(400)
-          .send({ msg: "please Enter data.excerpt in a string format" });
+          .json({ message: "please Enter data.excerpt in a string format" });
       }
       data.excerpt = data.excerpt.trim();
       if (data.excerpt != "") obj.excerpt = data.excerpt;
@@ -181,13 +187,13 @@ export const updateBook = async (req, res) => {
       if (typeof data.ISBN != "string") {
         return res
           .status(400)
-          .send({ msg: "please Enter ISBN in a string format" });
+          .json({ message: "please Enter ISBN in a string format" });
       }
 
       if (!checkISBN(data.ISBN)) {
         return res
           .status(400)
-          .send({ status: false, msg: `ISBN is Not valid.` });
+          .json({ status: false, message: `ISBN is Not valid.` });
       }
     }
     // relleasedAt key-------------------------------------------------------------------
@@ -195,7 +201,7 @@ export const updateBook = async (req, res) => {
       if (moment(data.releasedAt).format("YYYY-MM-DD") != data.releasedAt)
         return res
           .status(400)
-          .send({ status: false, msg: "Enter date in YYYY-MM-DD" });
+          .json({ status: false, message: "Enter date in YYYY-MM-DD" });
       obj.releasedAt = data.releasedAt;
     }
 
@@ -205,7 +211,7 @@ export const updateBook = async (req, res) => {
       if (booksData) {
         return res
           .status(400)
-          .send({ status: false, msg: "Book with this title already exists" });
+          .json({ status: false, message: "Book with this title already exists" });
       }
 
       obj.title = data.title;
@@ -216,7 +222,7 @@ export const updateBook = async (req, res) => {
       if (ISBNdata) {
         return res
           .status(400)
-          .send({ status: false, msg: "Book with this ISBN already exists" });
+          .json({ status: false, message: "Book with this ISBN already exists" });
       }
       obj.ISBN = data.ISBN;
     }
@@ -224,7 +230,7 @@ export const updateBook = async (req, res) => {
     if (Object.keys(obj).length == 0)
       return res
         .status(400)
-        .send({ status: false, msg: "please provide something to update" });
+        .json({ status: false, message: "please provide something to update" });
 
     let update = await BookModel.findOneAndUpdate(
       { _id: bookId, isDeleted: false },
@@ -232,9 +238,9 @@ export const updateBook = async (req, res) => {
       { new: true }
     );
 
-    return res.status(200).send({ status: true, data: update });
+    return res.status(200).json({ status: true, data: update });
   } catch (error) {
-    return res.status(500).send({ status: false, error: error.message });
+    return res.status(500).json({ status: false, error: error.message });
   }
 };
 
@@ -242,8 +248,16 @@ export const updateBook = async (req, res) => {
 // delete-----------------------------------------------------------------------------
 export const deletedbyId = async function (req, res) {
   try {
-    let bookId = req.params.bookId;
-
+      let bookId = req.params.bookId;
+      if (!bookId) {
+          return res.status(400).json({ status:false,error:'bookId is required' });
+      };
+      if (!isValid(bookId)){
+          return res.status(400).json({
+              status: false,
+              message: "Invalid bookID, please enter a valid ID",
+          });}
+          
     let deletedbybookid = await BookModel.findOneAndUpdate(
       { _id: bookId, isDeleted: false },
       { isDeleted: true, DeletedAt: Date.now() }
@@ -251,12 +265,12 @@ export const deletedbyId = async function (req, res) {
     if (!deletedbybookid)
       return res
         .status(404)
-        .send({ status: false, msg: "no book document found" });
+        .json({ status: false, message: "no book document found" });
 
     return res
       .status(200)
-      .send({ status: true, message: "Deleted successfully" });
+      .json({ status: true, message: "Deleted successfully" });
   } catch (error) {
-    return res.status(500).send({ status: false, error: error.message });
+    return res.status(500).json({ status: false, error: error.message });
   }
 };

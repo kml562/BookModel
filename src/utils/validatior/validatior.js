@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 
 export const isValidName = (name) => {
     const nameRegex = /^[a-zA-Z]{1,20}$/; 
@@ -16,8 +17,7 @@ export const isValidName = (name) => {
   
   
   export const isValid =  (input)=> {
-    if (typeof input === "undefined" || input === null) return false;
-    if (typeof input === "string" && input.trim().length > 0 && input) return true;
+    if (mongoose.Types.ObjectId.isValid(input)) return true;
     return false;
   };
   
