@@ -52,8 +52,6 @@ const bookScema = new Scema({
           message: 'Invalid date format. Must be in "YYYY-MM-DD" format.'
         }
       }
-  
-  
 }, { timestamps: true });
 
 const BookModel = mongoose.model('Book',bookScema);
