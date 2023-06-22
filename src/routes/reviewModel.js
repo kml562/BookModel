@@ -8,7 +8,7 @@ const router = express.Router();
 // Update the related book document by increasing its review count
 // Return the updated book document with reviews data on successful operation. The response body should be in the form of JSON object like this
 
-export const= postReview = async (req, res) => {
+export const postReview = async (req, res) => {
     try {
         
     } catch (error) {
