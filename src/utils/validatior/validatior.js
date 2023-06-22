@@ -35,4 +35,11 @@ export const isValidName = (name) => {
     if (input == "") return false;
     else return input
       
-  }
+}
+  
+export const checkISBN = function (ISBN) {
+  let regexForIsbn=/^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$/
+ return  regexForIsbn.test(ISBN) 
+
+
+}
