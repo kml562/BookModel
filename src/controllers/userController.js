@@ -26,7 +26,7 @@ export const createUser = async (req, res) => {
      return res.status(400).json({ status: false, message: "Invalid email" });
     }
     //password validator--------------------------------------------------------------------------------
-    if (isValidPassword(password)) {
+    if (!isValidPassword(password)) {
     return  res.status(400).json({ status: false, message: "Invalid password" });
     }
     //phone number validator--------------------------------------------------------------------------------
