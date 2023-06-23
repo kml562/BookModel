@@ -46,7 +46,7 @@ export const createBooks = async (req, res) => {
     const data = await BookModel.create(bookData);
     res.status(201).json({ status: true, data: data });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
@@ -103,7 +103,7 @@ export const getbooks = async (req, res) => {
       data: data,
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(400).json({ error: error.message });
   }
 };
 
