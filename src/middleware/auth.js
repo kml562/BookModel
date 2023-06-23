@@ -1,7 +1,8 @@
 import jwt from "jsonwebtoken";
 
 export const authentication = (req, res, next)=> {
-    try{
+  try {
+   
       const headers = req.headers["x-api-key"];
       const { JWT_SECRET } = process.env;
     if(!headers){

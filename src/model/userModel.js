@@ -32,8 +32,8 @@ const userSchema = new Schema({
   password: {
     type: String,
     require: true,
-    minlength: 8,
-    maxlength: 15,
+    // minlength: 8,
+    // maxlength: 15,
   },
   address: {
     street: {
