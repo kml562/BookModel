@@ -2,10 +2,12 @@ import { isValidObjectId } from "mongoose";
 import { checkISBN, isValid } from "../utils/validatior/validatior.js";
 import BookModel from "../model/bookModel.js";
 import moment from "moment";
-
+import validator from "validator";
+import mongoose from "mongoose";
+import ReviewModel from "../model/reviewModel.js";
 export const createBooks = async (req, res) => {
   try {
-    const { title, excerpt, userId, ISBN, category, subcategory, reviews } = req.body;
+    const { title, excerpt, userId, ISBN, category, subcategory, reviews,releasedAt } = req.body;
 
     if (!title || !excerpt || !userId || !category || !subcategory || !ISBN) {
       return res
@@ -22,11 +24,17 @@ export const createBooks = async (req, res) => {
         .status(400)
         .json({ status: false, messsage: "please provide valid user Id" });
     }
+    if (!validator.isDate(releasedAt, { format: 'YYYY-MM-DD' })) {
+      return res.status(400).json({ status: false, message: "wrong date format" });
+    }
 
     const bookData = req.body;
     bookData.isDeleted = false;
     // when book is created then it will be released-----------------------------------------
-    bookData.releasedAt = moment().format("YYYY-MM-DD");
+    if (!releasedAt) {
+      bookData.releasedAt = moment().format("YYYY-MM-DD");
+    }
+   
     const checkbook = await BookModel.findOne({
       $or: [{ title: title }, { ISBN: ISBN }],
     });
@@ -106,6 +114,7 @@ export const getbooks = async (req, res) => {
 
 export const getbookId = async (req, res) => {
   try {
+    return res.status(400).json({e:"dlsjdl;fjas"})
     let bookId = req.params.bookId;
     if (!isValid(bookId)) {
         return res.status(400).json({
@@ -121,24 +130,16 @@ export const getbookId = async (req, res) => {
         .json({ status: false, message: "Book does not exist with this ID" });
     }
 
-    let review = await reviewModel.find({ bookId: bookId, isDeleted: false });
+    let review = await ReviewModel.find({ bookId: bookId, isDeleted: false });
 
-    book.review = review;
+    book.reviews = review;
     return res.status(200).json({ status: true, data: book });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
   }
 };
 
-// Update a book by changing its
-// title
-// excerpt
-// release date
-// ISBN
-// Make sure the unique constraints are not violated when making the update
-// Check if the bookId exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404 with a response body like this
-// Return an HTTP status 200 if updated successfully with a body like this
-// Also make sure in the response you return the updated book docu
+
 
 export const updateBook = async (req, res) => {
   try {

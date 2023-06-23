@@ -202,16 +202,17 @@ export const deleteReview = async (req, res) => {
       reviewId,
       { isDeleted: true },
       { new: true }
-    );
+      );
+      let update = await BookModel.findByIdAndUpdate(
+        bookId,
+        { $inc: { reviews: -1 } },
+        { new: true }
+      );
 
-    res.status(200).json({ status: true, message: "deleted successfully" });
+   return res.status(200).json({ status: true, message: "deleted successfully" });
 
     //updating the review count --------------------------------------
-    let update = await BookModel.findByIdAndUpdate(
-      bookId,
-      { $inc: { reviews: -1 } },
-      { new: true }
-    );
+   
   } catch (error) {
     return res.status(500).json({ status: false, error: error.message });
   }
