@@ -7,15 +7,16 @@ const reviewSchema = new Schema({
         ref: 'Book',
         required: true,
     },
-    reviewedBy: {
-        type: String,
-        require: true,
-        default: "Guest",
-        value: {
-            type: String,
-            required: true,
+  reviewedBy: {
+    type: String,
+    require: true,
+    default: "Guest",
+    value: {
+      type: String,
+      required: true,
         
-        },
+    }
+  },
         reviewedAt: {
             type: Date,
             required: true
@@ -33,8 +34,8 @@ const reviewSchema = new Schema({
             type: Boolean,
             default: false
           }
-    }
-})
+    
+}, {timestamps: true})
 
 const ReviewModel = model('Review', reviewSchema);
 

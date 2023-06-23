@@ -6,8 +6,9 @@ import { authorization } from "../middleware/authrzation.js";
 const router = express.Router();
 
 router.post('/books',authentication ,createBooks);
-router.get('/books', authentication,getbooks);
-router.get('books/:bookId', authentication,getbookId);
-router.put('books/:bookId',authentication ,authorization,updateBook);
-router.delete('books/:bookId',authentication,authorization,deletedbyId );
+router.get('/books', authentication, getbooks);
+
+router.get('/books/:bookId', authentication,getbookId);
+router.put('/books/:bookId',authentication ,authorization,updateBook);
+router.delete('/books/:bookId',authentication,authorization,deletedbyId );
 export default router;

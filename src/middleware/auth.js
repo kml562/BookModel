@@ -16,7 +16,8 @@ jwt.verify(headers,JWT_SECRET,(error,token)=>{
         }
       else
       {
-        req.decodedToken=token;
+          req.decodedToken = token;
+          console.log(req.decodedToken);
      // set tokin in req --------------------------------------------------------------------------------------
         next()
       }
