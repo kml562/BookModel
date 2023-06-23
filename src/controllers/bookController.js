@@ -114,7 +114,7 @@ export const getbooks = async (req, res) => {
 
 export const getbookId = async (req, res) => {
   try {
-    return res.status(400).json({e:"dlsjdl;fjas"})
+ 
     let bookId = req.params.bookId;
     if (!isValid(bookId)) {
         return res.status(400).json({
@@ -131,9 +131,23 @@ export const getbookId = async (req, res) => {
     }
 
     let review = await ReviewModel.find({ bookId: bookId, isDeleted: false });
-
-    book.reviews = review;
-    return res.status(200).json({ status: true, data: book });
+    let finalData={
+      _id:book._id,
+      title:book.title,
+      excerpt:book.excerpt,
+      userId:book.userId,
+      ISBN:book.ISBN,
+      category:book.category,
+      subcategory:book.subcategory,
+      reviews:book.reviews,
+      isDeleted:book.isDeleted,
+      releasedAt:book.releasedAt,
+      createdAt:book.createdAt,
+      updatedAt:book.updatedAt,
+      reviewsData:review,
+         
+  }
+    return res.status(200).json({ status: true,  message: 'Books list',data: finalData });
   } catch (error) {
     res.status(500).json({ status: false, error: error.message });
   }
@@ -239,7 +253,7 @@ export const updateBook = async (req, res) => {
       { new: true }
     );
 
-    return res.status(200).json({ status: true, data: update });
+    return res.status(200).json({ status: true, message: 'Success', data: update });
   } catch (error) {
     return res.status(500).json({ status: false, error: error.message });
   }
@@ -261,7 +275,7 @@ export const deletedbyId = async function (req, res) {
           
     let deletedbybookid = await BookModel.findOneAndUpdate(
       { _id: bookId, isDeleted: false },
-      { isDeleted: true, DeletedAt:moment.format('YYYY-MM-DD HH:mm:ss') }
+      { isDeleted: true, DeletedAt:moment().format('YYYY-MM-DD HH:mm:ss') }
     );
     if (!deletedbybookid)
       return res
