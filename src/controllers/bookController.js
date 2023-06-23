@@ -205,11 +205,11 @@ export const updateBook = async (req, res) => {
           .json({ message: "please Enter ISBN in a string format" });
       }
 
-      if (!checkISBN(data.ISBN)) {
-        return res
-          .status(400)
-          .json({ status: false, message: `ISBN is Not valid.` });
-      }
+      // if (!checkISBN(data.ISBN)) {
+      //   return res
+      //     .status(400)
+      //     .json({ status: false, message: `ISBN is Not valid.` });
+      // }
     }
     // relleasedAt key-------------------------------------------------------------------
     if (data.releasedAt) {
