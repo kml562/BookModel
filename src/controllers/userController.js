@@ -31,8 +31,8 @@ export const createUser = async (req, res) => {
     }
 
     //without regex validation----------------------------------------------------------------
-    if (!password.trim().length < 8 || !password.trim().length > 15) { 
-      return res.status(400).json({ status: false, message: "Invalid password" });
+    if (password.trim().length < 8 || password.trim().length > 15) { 
+      return res.status(400).json({ status: false, message: "Invalid password ." });
     }
     //phone number validator--------------------------------------------------------------------------------
     req.body.phone = phone + "";
@@ -80,8 +80,8 @@ export const login = async (req, res) => {
       return res.status(400).json({ status: false, message: "Invalid password" });
     }
    //without regex validation----------------------------------------------------------------
-   if (!password.trim().length < 8 || !password.trim().length > 15) { 
-    return res.status(400).json({ status: false, message: "Invalid password" });
+   if (password.trim().length < 8 || password.trim().length > 15) { 
+    return res.status(400).json({ status: false, message: "Invalid password ." });
   }
     const userlogin = await UserModel.findOne({email});
     if (!userlogin) {
