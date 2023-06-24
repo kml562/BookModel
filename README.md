@@ -1,10 +1,22 @@
-# Technetium
+# - Books Management Project
 
-## Project - Books Management
+The Technetium Books Management project is a web application designed to manage books and user reviews. It provides a set of APIs for user registration, login, book creation, book retrieval, book updating, book deletion, and book reviews. The project aims to facilitate efficient management of books and enable users to share their reviews and ratings.
 
-### Key points
--  Branch name should follow the naming convention `project/booksManagement`
-- Follow the naming conventions exactly as instructed.
+## Project Structure
+
+The project is organized into three main models:
+
+1. User Model: Represents user information, including title, name, contact details, address, and timestamps for creation and update.
+
+2. Books Model: Represents book information, including title, excerpt, user ID, ISBN, category, subcategory, review count, deletion status, release date, and timestamps for creation and update.
+
+3. Review Model: Represents book reviews, including the book ID, reviewer's name, review timestamp, rating, review text, deletion status, and timestamps for creation and update.
+
+## User APIs
+
+- **POST /register**: Creates a new user with the provided information.
+- **POST /login**: Allows a user to log in using their email and password.
+  
 
 ### Models
 - User Model
@@ -55,92 +67,42 @@
 }
 ```
 
-## User APIs 
-### POST /register
-- Create a user - atleast 5 users
-- Create a user document from request body.
-- Return HTTP status 201 on a succesful user creation. Also return the user document. The response should be a JSON object like [this](#users)
-- Return HTTP status 400 if no params or invalid params received in request body. The response should be a JSON object like [this](#error-response-structure)
-
-### POST /login
-- Allow an user to login with their email and password.
-- On a successful login attempt return a JWT token contatining the userId, exp, iat. The response should be a JSON object like [this](#Successful-Login-Response-structure)
-- If the credentials are incorrect return a suitable error message with a valid HTTP status code. The response should be a JSON object like [this](#error-response-structure)
 
 ## Books API
-### POST /books
-- Create a book document from request body. Get userId in request body only.
-- Make sure the userId is a valid userId by checking the user exist in the users collection.
-- Return HTTP status 201 on a succesful book creation. Also return the book document. The response should be a JSON object like [this](#books) 
-- Create atleast 10 books for each user
-- Return HTTP status 400 for an invalid request with a response body like [this](#error-response-structure)
 
-### GET /books
-- Returns all books in the collection that aren't deleted. Return only book _id, title, excerpt, userId, category, releasedAt, reviews field. Response example [here](#get-books-response)
-- Return the HTTP status 200 if any documents are found. The response structure should be like [this](#successful-response-structure) 
-- If no documents are found then return an HTTP status 404 with a response like [this](#error-response-structure) 
-- Filter books list by applying filters. Query param can have any combination of below filters.
-  - By userId
-  - By category
-  - By subcategory
-  example of a query url: books?filtername=filtervalue&f2=fv2
-- Return all books sorted by book name in Alphabatical order
-
-### GET /books/:bookId
-- Returns a book with complete details including reviews. Reviews array would be in the form of Array. Response example [here](#book-details-response)
-- Return the HTTP status 200 if any documents are found. The response structure should be like [this](#successful-response-structure) 
-- If the book has no reviews then the response body should include book detail as shown [here](#book-details-response-no-reviews) and an empty array for reviewsData.
-- If no documents are found then return an HTTP status 404 with a response like [this](#error-response-structure) 
-
-### PUT /books/:bookId
-- Update a book by changing its
-  - title
-  - excerpt
-  - release date
-  - ISBN
-- Make sure the unique constraints are not violated when making the update
-- Check if the bookId exists (must have isDeleted false and is present in collection). If it doesn't, return an HTTP status 404 with a response body like [this](#error-response-structure)
-- Return an HTTP status 200 if updated successfully with a body like [this](#successful-response-structure) 
-- Also make sure in the response you return the updated book document. 
-
-### DELETE /books/:bookId
-- Check if the bookId exists and is not deleted. If it does, mark it deleted and return an HTTP status 200 with a response body with status and message.
-- If the book document doesn't exist then return an HTTP status of 404 with a body like [this](#error-response-structure) 
+- **POST /books**: Creates a new book with the provided information.
+- **GET /books**: Retrieves all books that are not marked as deleted.
+- **GET /books/:bookId**: Retrieves detailed information about a specific book, including its reviews.
+- **PUT /books/:bookId**: Updates a specific book by changing its title, excerpt, release date, or ISBN.
+- **DELETE /books/:bookId**: Marks a specific book as deleted.
 
 ## Review APIs
-### POST /books/:bookId/review
-- Add a review for the book in reviews collection.
-- Check if the bookId exists and is not deleted before adding the review. Send an error response with appropirate status code like [this](#error-response-structure) if the book does not exist
-- Get review details like review, rating, reviewer's name in request body.
-- Update the related book document by increasing its review count
-- Return the updated book document with reviews data on successful operation. The response body should be in the form of JSON object like [this](#Review-Response-Structure)
 
-### PUT /books/:bookId/review/:reviewId
-- Update the review - review, rating, reviewer's name.
-- Check if the bookId exists and is not deleted before updating the review. Check if the review exist before updating the review. Send an error response with appropirate status code like [this](#error-response-structure) if the book does not exist
-- Get review details like review, rating, reviewer's name in request body.
-- Return the updated book document with reviews data on successful operation. The response body should be in the form of JSON object like [this](#book-details-response)
+- **POST /books/:bookId/review**: Creates a new review for a specific book.
+- **PUT /books/:bookId/review/:reviewId**: Updates a specific review for a book.
+- **DELETE /books/:bookId/review/:reviewId**: Marks a specific review as deleted for a book.
 
-### DELETE /books/:bookId/review/:reviewId
-- Check if the review exist with the reviewId. Check if the book exist with the bookId. Send an error response with appropirate status code like [this](#error-response-structure) if the book or book review does not exist
-- Delete the related reivew.
-- Update the books document - decrease review count by one
+## Setup and Configuration
 
-### Authentication
-- Make sure all the book routes are protected.
+1. Clone the Technetium Books Management project repository from GitHub.
+2. Install the required dependencies by running `npm install` in the project's root directory.
+3. Configure the database connection settings in the project's configuration file.
+4. Start the application by running `npm start` in the project's root directory.
+5. The application will start and be accessible at the configured URL and port.
 
-### Authorisation
-- Make sure that only the owner of the books is able to create, edit or delete the book.
-- In case of unauthorized access return an appropirate error message.
+## Technologies Used
 
-## Testing 
-- To test these apis create a new collection in Postman named Project 4 Books Management 
-- Each api should have a new request in this collection
-- Each request in the collection should be rightly named. Eg Create user, Create book, Get books etc
-- Each member of each team should have their tests in running state
+- Node.js
+- Express.js
+- MongoDB
+- JSON Web Tokens (JWT)
+- Mongoose
+- RESTful APIs
+- bcrypt
+- validtor
+- dotenv
 
-Refer below sample
- ![A Postman collection and request sample](assets/Postman-collection-sample.png)
+
 
 ## Response
 
@@ -373,3 +335,11 @@ Refer below sample
     }
 }
 ```
+
+## Conclusion
+
+The Technetium Books Management project provides a robust and scalable solution for managing books and user reviews. By utilizing the provided APIs, users can register, log in, create books, retrieve book information, update books, delete books, and submit reviews. The project is built using modern web technologies and follows industry-standard best practices for security and performance.
+
+For any further assistance or questions, please don't hesitate to contact the project maintainers.
+
+Thank you for using Technetium Books Management!
