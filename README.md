@@ -342,4 +342,4 @@ The Technetium Books Management project provides a robust and scalable solution 
 
 For any further assistance or questions, please don't hesitate to contact the project maintainers.
 
-Thank you for using Technetium Books Management!
+Thank you for using my Books Management!
