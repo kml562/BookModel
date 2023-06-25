@@ -1,4 +1,4 @@
-# - Books Management Project
+#  Books Management Project
 
 The Technetium Books Management project is a web application designed to manage books and user reviews. It provides a set of APIs for user registration, login, book creation, book retrieval, book updating, book deletion, and book reviews. The project aims to facilitate efficient management of books and enable users to share their reviews and ratings.
 
