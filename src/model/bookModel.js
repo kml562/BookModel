@@ -52,7 +52,10 @@ const bookSchema = new Schema(
       //   },
       //   message: 'Invalid date format. Must be in "YYYY-MM-DD" format.',
       // },
-    },
+    },  bookCover: {
+      type: String,
+      required: true
+    }
   },
   { timestamps: true }
 );
